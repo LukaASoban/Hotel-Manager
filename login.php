@@ -1,73 +1,89 @@
+<?php
+	/**
+	 * Version : 0.1
+	 * Author: Battulga Myagmarjav
+	 */
+
+	/* get connect to MYSQL server */
+	require 'connect.php';
+	/* instances for login */
+	$alert_msg = "";
+	$username = "";
+	$password = "";
+	$query = "";
+	$result = "";
+	$query_select = "SELECT * FROM";
+
+	session_start();
+
+	if (!empty($_POST['username']) && !empty($_POST['password'])) {
+		$username = $_POST['username'];
+		$password = $_POST['password'];
+		$condition = "WHERE username = " . "'" . $username . "'" .
+					  " AND password = " . "'" . $password . "'";
+		$_SESSION['username'] = $username;
+		/* check what type of user is trying to access */
+		if ($_POST["user_type"] ==  "customer") {
+			// SQL for customer table
+			$query = $query_select . " customer " . $condition;
+		}
+		/* check what type of user is trying to access */
+		if ($_POST["user_type"] ==  "manager") {
+			// SQL for management table
+			$query = $query_select . " management " . $condition; 
+		}
+		/* check query is empty */
+		if (!empty($query)) {
+			$result = mysql_query($query);
+		}
+		/** 
+		 * If person is found then send him/her proper page
+		 * otherwise stay on login page and display what warn
+		 * them. 
+		 */
+		if (mysql_num_rows($result) > 0) {
+			if ($_POST["user_type"] == "customer") {
+				header("Location: customer_panel.php");
+			} else {
+				header("Location: management_panel.php");
+			}
+		} else {
+			$alert_msg = "Wrong password or username! Please try again!";
+		} 
+	}
+	if (empty($_POST['username']) && !empty($_POST['password'])) {
+		$alert_msg = "Your username is required!";
+	}
+	if (!empty($_POST['username']) && empty($_POST['password'])) {
+		$username = $_POST['username'];
+		$alert_msg = "Your password is required!";
+	}
+	if (isset($_POST["login"]) && empty($_POST['username']) && empty($_POST['password'])) {
+		$alert_msg = "Your username and password are required!";
+	}
+	
+	mysql_close();
+?>
+
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
-
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <style>
-    .center {
-        text-align:center;
-    }
-
-    .emailForm {
-    border:1px solid grey;
-     border-radius:10px;
-     margin-top:20px;
-    }
-
-    form {
-        padding-top:20px;
-        padding-bottom:20px;
-
-    }
-    </style>
-    </head>
-
-    <body>
-        <h1 class="center">Login</h1>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3 emailForm">
-
-                    <?php echo $result; ?>
-
-                    <form method="post">
-                        <div class="form-group">
-                            <label for="name">Your Name:</label>
-                            <input type="text" name="name" class="form-control" placeholder="Your Name"
-                            value="<?php echo $_POST['name']; ?>" />
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Your Email:</label>
-                            <input type="email" name="email" class="form-control" placeholder="Your Email"
-                            value="<?php echo $_POST['email']; ?>" />
-                        </div>
-                        <div class="form-group">
-                            <label for="comment">Your Comment:</label>
-                            <textarea class="form-control" name="comment"><?php echo $_POST['comment']; ?></textarea>
-                        </div>
-                        <input type="submit" name="submit" class="btn btn-success btn-lg" value="Submit" />
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </body>
-
+<html>
+	<head>
+		<title>Welcome to Login Page</title>
+	</head>
+	<body>
+		<?php echo $alert_msg;?>
+		<form method="post">
+			<br>
+			<input type="text" name="username" value="<?php echo $username;?>" placeholder="username" required>
+			<br>
+			<input type="password" name="password" placeholder="password" required>
+			<br>
+			<input type="submit" name="login" value="LOGIN">
+			<br>
+			<input type="radio" name="user_type" value = "customer" checked> Customer <br>
+			<input type="radio" name="user_type" value = "manager"> Manager
+			<br>
+			<a href="registration.php"> click on registration </a>
+		</form>
+	</body>
 </html>

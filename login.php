@@ -6,6 +6,7 @@
 
 	/* get connect to MYSQL server */
 	require 'connect.php';
+
 	/* instances for login */
 	$alert_msg = "";
 	$username = "";

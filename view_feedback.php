@@ -13,23 +13,30 @@
 	$comment = "";
 	$query = "";
 	$result = "";
-	$error_msg = "";
+	$table = "";
+	$items = array();
+
+	$review_location = "";
 
 
 	if (isset($_POST['Check'])) {
 		$location = $_POST['location'];	//location
-		$user = $_SESSION['username']; //user
 
 		$query = "SELECT Rating, Comment FROM review WHERE Location = '$location'";
 
 		$result=mysql_query($query);
 
-		if (empty($result)) {
-			$error_msg = "An ERROR has occured with your submisson";
-			echo "<script type='text/javascript'>alert('$error_msg');</script>";
-		} else {
-			
+		$table .= "<table border='1' style = 'width:100%'>";
+		$table .= "<tr><th>Rating</th><th>Comment</th></tr>";
+		while($row = mysql_fetch_assoc($result)) {
+			$table.= "<tr><td>" . $row['Rating'] . "</td><td>" . $row['Comment'] . "</td></tr>";
+
 		}
+		$table .= "</table>";
+
+		$review_location .= "Reviews of " . $location . " location:";
+		
+
 	}
 
 	if (isset($_POST['back'])) {
@@ -54,9 +61,13 @@
 				<option value="Savannah">Savannah</option>
 				<option value="Orlando">Orlando</option>
 				<option value="Miami">Miami</option>
-			</select><br />
-			<input type='submit' name='Check' value='Check Reviews' /><br />
+			</select>
+			<input type='submit' name='Check' value='Check Reviews' />
+			<br></br>
 			<input type='submit' name='back' value='Go Back' />
 		</form>
+		<br></br>
+		<p><big><?php echo $review_location; ?> </big></p>
+		<div id="mydiv"><?php echo $table; ?></div> 
 	</body>
 </html>

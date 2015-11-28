@@ -6,7 +6,7 @@
 	<body>
 		<h2> Welcome <?php session_start(); echo $_SESSION['username'] . ",";?></h2>
 		<br>
-		<a href="new_reservation.php"> Make new reservation </a>
+		<a href="search_rooms.php"> Make new reservation </a>
 		<br>
 		<a href="update_reservation.php"> Update your reservation </a>
 		<br>

@@ -6,6 +6,7 @@
 
 	/* get connect to MYSQL server */
 	require 'connect.php';
+
 	/* instances for login */
 	$alert_msg = "";
 	$username = "";
@@ -70,7 +71,7 @@
 	<head>
 		<title>Welcome to Login Page</title>
 	</head>
-	<body>
+	<body style="text-align: center;">
 		<?php echo $alert_msg;?>
 		<form method="post">
 			<br>

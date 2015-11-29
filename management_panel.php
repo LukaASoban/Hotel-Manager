@@ -6,10 +6,10 @@
 	<body>
 		<h2> Welcome <?php session_start(); echo $_SESSION['username'] . ",";?></h2>
 		<br>
-		<a href="new_reservation.php"> View Reservation report </a>
+		<a href="Reservation_per_location.php"> View Reservation report </a>
 		<br>
-		<a href="update_reservation.php"> View Popular room category report </a>
+		<a href="popularRoom_report.php"> View Popular room category report </a>
 		<br>
-		<a href="cancel_reservation.php"> View revenue report </a>
+		<a href="Revenue_Report.php"> View revenue report </a>
 	</body>
 </html>

@@ -6,7 +6,12 @@
 	<body>
 
 		<?php
-			include ('connection.php');
+		/**
+		* Version: 1.0
+		* Author: Thanh Tran
+		* Report of popular room category in each location in August
+		**/
+			include ('connect.php');
 
 			$query = "SELECT RR.Location,RR.Category, MAX( RR.Num ) AS Num 
 FROM 
@@ -28,7 +33,7 @@ GROUP BY Location";
 			echo "<table border = '5'>";
 			echo "<tr> <th COLSPAN='4'> Popular Room</th> </tr>";
 			echo "<tr><th> Month</th><th>Location</th><th>Category</th><th>Num</th></tr>";
-			echo "<th ROWSPAN='5'>Agust</th>";
+			echo "<th ROWSPAN='6'>Agust</th>";
 			while($row = mysql_fetch_assoc(($result))) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";
@@ -42,5 +47,8 @@ GROUP BY Location";
 
 			mysql_close($db_server);
 		?>
+		<form action="management_panel.php">
+			<input type="submit" value="Back">
+		</form>
 	</body>
 </html>

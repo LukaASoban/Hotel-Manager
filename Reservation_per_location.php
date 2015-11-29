@@ -6,14 +6,19 @@
 	<body>
 
 		<?php
+		/**
+		* Version: 1.0
+		* Author: Thanh Tran
+		* Report of the total reservation in each location in August and Septemper
+		**/
 			include ('connect.php');
 
-			$query = "SELECT Reservation_has_room.Location, COUNT(*) AS Num FROM Reservation_has_room NATURAL JOIN Reservation WHERE month(Reservation.End_date) = '12' GROUP BY Reservation_has_room.Location";
+			$query = "SELECT Reservation_has_room.Location, COUNT(*) AS Num FROM Reservation_has_room NATURAL JOIN Reservation WHERE month(Reservation.End_date) = '08' GROUP BY Reservation_has_room.Location";
 			$result = mysql_query($query);
 			echo "<table border = '5'>";
 			echo "<tr> <th COLSPAN='3'> Reservation Report</th> </tr>";
 			echo "<tr><th> Month</th><th>Location</th><th>Num</th></tr>";
-			echo "<th ROWSPAN='5'>Agust</th>";
+			echo "<th ROWSPAN='6'>Agust</th>";
 			while($row = mysql_fetch_assoc(($result))) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";
@@ -23,11 +28,11 @@
 			//echo "</table>";
 
 
-			$query = "SELECT Reservation_has_room.Location, COUNT(*) AS Num FROM Reservation_has_room NATURAL JOIN Reservation WHERE month(Reservation.End_date) = '12' GROUP BY Reservation_has_room.Location";
+			$query = "SELECT Reservation_has_room.Location, COUNT(*) AS Num FROM Reservation_has_room NATURAL JOIN Reservation WHERE month(Reservation.End_date) = '09' GROUP BY Reservation_has_room.Location";
 			$result = mysql_query($query);
 			//echo "December";
 			//echo "<table border = '5'><tr><th>Location</th><th>Num</th></tr>";
-			echo "<tr><th ROWSPAN='5'>Septemper</th>";
+			echo "<tr><th ROWSPAN='6'>Septemper</th>";
 			while($row = mysql_fetch_assoc($result)) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";

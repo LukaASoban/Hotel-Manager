@@ -33,7 +33,7 @@ GROUP BY Location";
 			echo "<table border = '5'>";
 			echo "<tr> <th COLSPAN='4'> Popular Room</th> </tr>";
 			echo "<tr><th> Month</th><th>Location</th><th>Category</th><th>Num</th></tr>";
-			echo "<th ROWSPAN='6'>Agust</th>";
+			echo "<th ROWSPAN='6'>August</th>";
 			while($row = mysql_fetch_assoc(($result))) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";

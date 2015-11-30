@@ -18,7 +18,7 @@
 			echo "<table border = '5'>";
 			echo "<tr> <th COLSPAN='3'> Reservation Report</th> </tr>";
 			echo "<tr><th> Month</th><th>Location</th><th>Num</th></tr>";
-			echo "<th ROWSPAN='6'>Agust</th>";
+			echo "<th ROWSPAN='6'>August</th>";
 			while($row = mysql_fetch_assoc(($result))) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";
@@ -32,7 +32,7 @@
 			$result = mysql_query($query);
 			//echo "December";
 			//echo "<table border = '5'><tr><th>Location</th><th>Num</th></tr>";
-			echo "<tr><th ROWSPAN='6'>Septemper</th>";
+			echo "<tr><th ROWSPAN='6'>September</th>";
 			while($row = mysql_fetch_assoc($result)) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";

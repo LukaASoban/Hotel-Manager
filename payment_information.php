@@ -33,6 +33,29 @@
 			$error_msg = "All inputs are required!";
 			$legal = false;
 		}
+
+
+		if(!ctype_digit($_POST['card_number'])) { 
+			$error_msg = "Card number must be only numbers!"; 
+			$legal = false; 
+		}
+
+		if(!ctype_digit($_POST['cvv'])) { 
+			$error_msg = "CVV must be only numbers!"; 
+			$legal = false; 
+		}
+
+		if(!ctype_alpha($_POST['name'])) {
+			$error_msg = "Name cannot contain numbers!"; 
+			$legal = false; 
+		}
+
+		// if(ctype_alpha($_POST['exp_date']) < ) {
+		// 	$error_msg = "Name cannot contain numbers!"; 
+		// 	$legal = false; 
+		// }
+
+		
 		/* if user inputs are legal, then process */
 		if ($legal) {
 			$card_number = $_POST['card_number'];
@@ -45,6 +68,7 @@
 								  $cvv . ", '" .
 								  $username . "');";
 			
+
 			mysql_query($query_insert_card);
 			$cards = mysql_query($query); //refreshes 
 		}
@@ -75,13 +99,13 @@
 			<input type="text" name="name">
 			<br>
 			Card Number
-			<input type="text" name="card_number">
+			<input type="text" name="card_number" minlength='16' maxlength='16'>
 			<br>
 			Expiration Date
-			<input type="text" name="exp_date">
+			<input type="date" name="exp_date">
 			<br>
 			CVV
-			<input type="text" name="cvv">
+			<input type="text" name="cvv" minlength='3' maxlength='3'>
 			<br>
 			<input type="submit" name="save" value="Save">
 		<form>

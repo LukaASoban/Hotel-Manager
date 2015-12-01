@@ -22,7 +22,7 @@
 	if (isset($_POST['Check'])) {
 		$location = $_POST['location'];	//location
 
-		$query = "SELECT Rating, Comment FROM review WHERE Location = '$location'";
+		$query = "SELECT Rating, Comment FROM Review WHERE Location = '$location'";
 
 		$result=mysql_query($query);
 
@@ -52,7 +52,7 @@
 		<title>View Review</title>
 	</head>
 	<body>
-		<p><big>View Review</big></p>
+		<div style="text-align:center">VIEW FEEDBACK</div>
 		Location:
 		<form method="post">
 			<select name="location">

@@ -25,7 +25,7 @@
 	/*Function for reservation ID*/
 	function checkReservationID($reservationID) {
 		$_SESSION["savedReservation"] = "value = '$reservationID'";
-		$_SESSION["query"] = "SELECT Username, Start_date, End_date FROM reservation WHERE ReservationID = '$reservationID' && Is_cancelled = '0'";
+		$_SESSION["query"] = "SELECT Username, Start_date, End_date FROM Reservation WHERE ReservationID = '$reservationID' && Is_cancelled = '0'";
 
 
 		$_SESSION["resultCur"] = mysql_query($_SESSION["query"]);
@@ -64,7 +64,15 @@
 
 			//diff between the current date and the start date
 			$diff3 = date_diff(date_create($currDate), date_create($datex));
-			$diff3 = $diff3->format("%a");
+			$diff3 = $diff3->format("%r%a");
+
+			if($diff3 < 0) {
+				$message = "You cannot update a reservation that has already past.";
+				echo "<script type='text/javascript'>alert('$message');</script>";
+				$_SESSION["resultCur"] = 0;
+				$_SESSION["table_current_dates"] = "";
+				return;
+			}
 
 			if($diff3 <= 3) {
 				$message = "You cannot update reservations 3 days before the Start Date of the reservation. You may only cancel.";
@@ -73,6 +81,7 @@
 				$_SESSION["table_current_dates"] = "";
 				return;
 			}
+
 
 
 			$phpdate2 = strtotime($row['End_date']);
@@ -136,7 +145,7 @@
 		$diff = $diff->format("%a");
 
 
-		if((strtotime($date1) >= strtotime(date('Y-m-d'))) && (strtotime($date2) > strtotime($date1))) {
+		if((strtotime($date1) >= strtotime($currDate)) && (strtotime($date2) > strtotime($date1))) {
 			//populates the top of the page again
 			checkReservationID($_SESSION["reservationID"]);
 
@@ -148,10 +157,7 @@
 			</form>";
 
 			//query to see if there is a valid update reservation
-			$query_for_valid = "SELECT Room_number, Location FROM reservation NATURAL JOIN reservation_has_room 
-			WHERE (Start_date BETWEEN '$date1' AND '$date2') 
-			&& (Room_number, Location) IN 
-			(SELECT Room_number,Location FROM reservation NATURAL JOIN reservation_has_room GROUP BY Room_number,Location HAVING COUNT(*) > 1 ) && NOT(ReservationID = '$rid') &&  NOT(Is_cancelled = '1')";
+			$query_for_valid = "Select Room_number, Location FROM ( SELECT Room_number, Location FROM Reservation NATURAL JOIN Reservation_has_room WHERE (Start_date BETWEEN '$date1' AND '$date2') AND Is_cancelled = '0' AND ReservationID != '$rid' )R NATURAL JOIN ( Select Reservation_has_room.Room_number, Reservation_has_room.Location FROM Reservation_has_room WHERE Reservation_has_room.ReservationID = '$rid' )RR WHERE R.Room_number = RR.Room_number AND R.Location = RR.Location";
 
 
 			$check_valid_update = mysql_query($query_for_valid);
@@ -165,7 +171,7 @@
 
 				//query the DB for the user's current reservation
 				$query_current = "SELECT Room_number, Category, Capacity, Cost, Cost_extra_bed, Include_extra_bed
-								FROM reservation_has_room NATURAL JOIN room
+								FROM Reservation_has_room NATURAL JOIN Room
 								WHERE ReservationID = '$rid'";
 
 				// get the current result for the RID
@@ -240,7 +246,7 @@
 
 
 
-		$query_update = "UPDATE reservation SET Start_date = '$user_nsd', End_date = '$user_ned', Total_cost = '$totalcost' WHERE `ReservationID` = '$user_rid'";
+		$query_update = "UPDATE Reservation SET Start_date = '$user_nsd', End_date = '$user_ned', Total_cost = '$totalcost' WHERE `ReservationID` = '$user_rid'";
 
 		$finalsubmit = mysql_query($query_update);
 
@@ -264,6 +270,7 @@
 		<title>Update Reservation</title>
 	</head>
 	<body>
+		<div style="text-align:center">UPDATE A RESERVATION</div>
 		Reservation ID
 		<form method="post">
 			<input type='text' name='reservationID' <?php echo $_SESSION["savedReservation"]; ?> />

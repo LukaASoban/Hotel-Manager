@@ -7,6 +7,8 @@
 	/* get connect to MYSQL server */
 	require 'connect.php';
 
+	session_start();
+
 	/* instances for search engine */
 	$location = "";
 	$rating ="";
@@ -15,6 +17,12 @@
 	$result = "";
 	$error_msg = "";
 
+	/* User clicks the return button to go back to panel page */
+	if(isset($_POST['goBack'])) {
+		//go back to menu since it worked
+		header("Location: customer_panel.php");
+	}
+
 
 	if (isset($_POST['Submit'])) {
 		$location = $_POST['location'];	//location
@@ -22,7 +30,7 @@
 		$comment = $_POST['comment']; //comment
 		$user = $_SESSION['username'];
 
-		$query .= "INSERT INTO `test`.`review` (`Comment`, `Rating`, `Location`, `Username`) VALUES ('$comment', '$rating', '$location', '$user');";
+		$query .= "INSERT INTO Review (Comment, Rating, Location, Username) VALUES ('$comment', '$rating', '$location', '$user');";
 
 		$result=mysql_query($query);
 
@@ -43,6 +51,7 @@
 		<title>Provide Feedback</title>
 	</head>
 	<body>
+		<div style="text-align:center">PROVIDE FEEDBACK</div>
 		Location:
 		<form method="post">
 			<select name="location">
@@ -64,7 +73,9 @@
 		Comment: <input type='text' name='comment' id='comment' />
 		<input type='submit' name='Submit' />
 		</form>
-
+		<form method="post">
+			<input type='submit' name='goBack' value="Back to Customer Panel" />
+		</form>
 	</body>
 </html>
 

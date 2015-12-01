@@ -24,9 +24,9 @@ WHERE MONTH(Reservation.End_date) = '08'
 GROUP BY R.Location";
 			$result = mysql_query($query);
 			echo "<table border = '5'>";
-			echo "<tr> <th COLSPAN='4'> Revenue Report</th> </tr>";
+			echo "<tr> <th COLSPAN='3'> Revenue Report</th> </tr>";
 			echo "<tr><th> Month</th><th>Location</th><th>Cost</th></tr>";
-			echo "<th ROWSPAN='6'>August</th>";
+			echo "<th ROWSPAN=".(mysql_num_rows($result) + 1 ).">August</th>";
 			while($row = mysql_fetch_assoc(($result))) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";
@@ -45,7 +45,7 @@ WHERE MONTH(Reservation.End_date) = '09'
 )R
 GROUP BY R.Location";
 			$result = mysql_query($query);
-			echo "<th ROWSPAN='6'>September</th>";
+			echo "<th ROWSPAN=".(mysql_num_rows($result) + 1).">September</th>";
 			while($row = mysql_fetch_assoc(($result))) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";

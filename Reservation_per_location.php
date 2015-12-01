@@ -18,13 +18,21 @@
 			echo "<table border = '5'>";
 			echo "<tr> <th COLSPAN='3'> Reservation Report</th> </tr>";
 			echo "<tr><th> Month</th><th>Location</th><th>Num</th></tr>";
-			echo "<th ROWSPAN='6'>August</th>";
+			echo "<th ROWSPAN=". mysql_num_rows($result).">August</th>";
+			// $locations = array();
+			// array_push($locations, "Atlanta");
+			// array_push($locations, "Charlotte");
+			// array_push($locations, "Orlando");
+			// array_push($locations, "Miami");
+			// array_push($locations, "Savannah");
+			echo "<table";
 			while($row = mysql_fetch_assoc(($result))) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";
 				echo "<td>". $row['Num'] . "</tb>";
 				echo "</tr>";
 			}
+
 			//echo "</table>";
 
 
@@ -32,7 +40,7 @@
 			$result = mysql_query($query);
 			//echo "December";
 			//echo "<table border = '5'><tr><th>Location</th><th>Num</th></tr>";
-			echo "<tr><th ROWSPAN='6'>September</th>";
+			echo "<tr><th ROWSPAN=". (mysql_num_rows($result) + 1) .">September</th>";
 			while($row = mysql_fetch_assoc($result)) {
 				echo "<tr>";
 				echo "<td>". $row['Location'] . "</tb>";
